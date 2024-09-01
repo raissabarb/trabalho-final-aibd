@@ -7,3 +7,22 @@ services:
       - ALLOW_EMPTY_PASSWORD=yes
     ports:
       - '6379:6379'
+    networks:
+      - app-network
+    volumes:
+      - redis-volume:/data
+  aplicacao:
+    build: .
+    ports:
+      - '5000:5000'
+    depends_on:
+      - redis
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  redis-volume:
