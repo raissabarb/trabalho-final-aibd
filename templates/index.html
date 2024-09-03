@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atividades Estudantis</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Bem-vindo ao Sistema de Gerenciamento de Atividades</h1>
+
+    <div class="container">
+        <div class="actions">
+            <button onclick="fetchStudentsWithUpcomingActivities()">Estudantes com atividades futuras</button>
+            <button onclick="fetchCoursesWithIncompleteActivities()">Cursos com atividades incompletas</button>
+            <button onclick="fetchAverageAgePerCourse()">Média de idade por curso</button>
+            <button onclick="fetchOverdueActivitiesPerStudent()">Atividades atrasadas por estudante</button>
+            <button onclick="fetchTop3CsStudents()">Top 3 alunos de CS por atividades concluídas</button>
+            <button onclick="fetchCourseWithHighestOverdueRatio()">Curso com maior proporção de atividades atrasadas</button>
+        </div>
+        <div id="results">
+            <!-- Os resultados serão exibidos aqui -->
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
+</body>
+</html>
