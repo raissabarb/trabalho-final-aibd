@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Gerenciamento de Estudantes</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Bem-vindo ao Sistema de Gerenciamento de Estudantes</h1>
+
+    <div class="container">
+        <h2>Ações Disponíveis</h2>
+        <button onclick="fetchStudents()">Ver Estudantes</button>
+        <button onclick="fetchViewAll()">Ver Todos os Dados</button>
+        <button onclick="fetchStudentsWithUpcomingActivities()">Estudantes com Atividades Futuras</button>
+        <button onclick="fetchCoursesWithIncompleteActivities()">Cursos com Atividades Incompletas</button>
+        <button onclick="fetchAverageAgePerCourse()">Média de Idade por Curso</button>
+        <button onclick="fetchOverdueActivitiesPerStudent()">Atividades Atrasadas por Estudante</button>
+        <button onclick="fetchTop3CsStudents()">Top 3 Alunos de CS por Atividades Concluídas</button>
+        <button onclick="fetchCourseWithHighestOverdueRatio()">Curso com Maior Proporção de Atividades Atrasadas</button>
+
+        <h3>Adicionar Chave-Valor</h3>
+        <form id="setValueForm">
+            <label for="key">Chave:</label>
+            <input type="text" id="key" name="key" required>
+            <label for="value">Valor:</label>
+            <input type="text" id="value" name="value" required>
+            <button type="submit">Definir</button>
+        </form>
+
+        <div id="results">
+            <!-- Os resultados serão exibidos aqui -->
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
+</body>
+</html>
