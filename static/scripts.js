@@ -75,3 +75,10 @@ function displayResults(data) {
     const resultsDiv = document.getElementById('results');
     resultsDiv.innerHTML = '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
 }
+
+function updateSoftwareEngineeringActivities() {
+    fetch('/update_software_engineering_activities', { method: 'POST' })
+        .then(response => response.json())
+        .then(data => alert(data.message))
+        .catch(error => console.error('Erro:', error));
+}
