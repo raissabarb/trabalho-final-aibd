@@ -10,7 +10,7 @@ r = redis.Redis(host='redis', port=6379, db=0)
 def populate_redis():
     # Check and populate students list if it does not exist
     if not r.exists('students'):
-        students = ['Raissa', 'Tainara', 'Victor', 'Gabriel', 'Pedro']
+        students = ['Raissa', 'Tainara', 'Victor', 'Leandro', 'Joao']
         r.rpush('students', *students)
     
     # Define student details including email, courses, and absence
@@ -36,17 +36,17 @@ def populate_redis():
             'age': 23,
             'major': 'Computer Engineering'
         },
-        'Gabriel': {
-            'email': 'gabriel@gmail.com',
+        'Leandro': {
+            'email': 'leandro@gmail.com',
             'courses': ['Algorithms', 'Operating Systems', 'Database Systems', 'Artificial Intelligence'],
-            'name': 'Gabriel',
+            'name': 'Leandro',
             'age': 21,
             'major': 'Computer Science'
         },
-        'Pedro': {
-            'email': 'pedro@gmail.com',
+        'Joao': {
+            'email': 'joao@gmail.com',
             'courses': ['Data Structures', 'Computer Networks', 'Database Systems', 'Artificial Intelligence'],
-            'name': 'Pedro',
+            'name': 'joao',
             'age': 22,
             'major': 'Computer Science'
         }
@@ -67,13 +67,13 @@ def populate_redis():
         'Binary Search Tree': {
             'subject': 'Data Structures',
             'due_date': '2024-09-15',
-            'assigned_to': 'Pedro',
+            'assigned_to': 'Joao',
             'status': 'open'
         },
         'Knapsack Problem': {
             'subject': 'Computer Networks',
             'due_date': '2024-09-12',
-            'assigned_to': 'Gabriel',
+            'assigned_to': 'Leandro',
             'status': 'open'
         },
         'Final Activity': {
@@ -203,10 +203,18 @@ def course_with_highest_overdue_ratio():
     course = course_with_highest_overdue_ratio()
     return jsonify({'course': course})
 
-@app.route('/most_overdue_activity_per_course_and_num_student', methods=['GET'])
-def most_overdue_activity_per_course_and_num_student():
-    activity_and_student_overdue = most_overdue_activity_per_course_and_num_students()
-    return jsonify({'Atividade mais atrasada em cada curso e quantos alunos estao atrasados para essa atividade': activity_and_student_overdue})
+
+@app.route('/most_overdue_activity_per_course_and_num_students', methods=['GET'])
+def api_most_overdue_activity_per_course_and_num_students():
+    result = most_overdue_activity_per_course_and_num_students()
+    return jsonify(result)
+
+@app.route('/students')
+def get_all_students():
+    students = r.lrange('students', 0, -1)
+    students = [student.decode('utf-8') for student in students]
+    return jsonify(students), 200
+
 
 def get_students_with_upcoming_activities(redis_client):
     today = datetime.today().strftime('%Y-%m-%d')
@@ -350,42 +358,43 @@ def course_with_highest_overdue_ratio():
 
 print(course_with_highest_overdue_ratio())
 
-# def most_overdue_activity_per_course_and_num_students():
-#     today = datetime.today().strftime('%Y-%m-%d')
-#     course_activities = {}
+def most_overdue_activity_per_course_and_num_students():
+    today = datetime.today().strftime('%Y-%m-%d')
+    course_activities = {}
 
-#     # Encontrar atividades atrasadas
-#     for activity_key in r.scan_iter('activity:*'):
-#         activity_details = r.hgetall(activity_key)
-#         due_date = activity_details.get(b'due_date', b'').decode('utf-8')
-#         course = activity_details.get(b'subject', b'').decode('utf-8')
-#         status = activity_details.get(b'status', b'').decode('utf-8')
-#         assigned_to = activity_details.get(b'assigned_to', b'').decode('utf-8')
+    # Encontrar atividades atrasadas
+    for activity_key in r.scan_iter('activity:*'):
+        activity_details = r.hgetall(activity_key)
+        due_date = activity_details.get(b'due_date', b'').decode('utf-8')
+        course = activity_details.get(b'subject', b'').decode('utf-8')
+        status = activity_details.get(b'status', b'').decode('utf-8')
+        assigned_to = activity_details.get(b'assigned_to', b'').decode('utf-8')
         
-#         if due_date < today and status == 'not completed':
-#             if course not in course_activities:
-#                 course_activities[course] = {}
-#             if (due_date, activity_key.decode('utf-8')) not in course_activities[course]:
-#                 course_activities[course][(due_date, activity_key.decode('utf-8'))] = []
-#             course_activities[course][(due_date, activity_key.decode('utf-8'))].append(assigned_to)
+        if due_date < today and status == 'not completed':
+            if course not in course_activities:
+                course_activities[course] = {}
+            if (due_date, activity_key.decode('utf-8')) not in course_activities[course]:
+                course_activities[course][(due_date, activity_key.decode('utf-8'))] = []
+            course_activities[course][(due_date, activity_key.decode('utf-8'))].append(assigned_to)
 
-#     most_overdue_activities = {}
-#     for course, activities in course_activities.items():
-#         # Ordena as atividades pela data de vencimento
-#         sorted_activities = sorted(activities.keys(), key=lambda x: x[0])
-#         most_overdue_activity = sorted_activities[0]
+    most_overdue_activities = {}
+    for course, activities in course_activities.items():
+        # Ordena as atividades pela data de vencimento
+        sorted_activities = sorted(activities.keys(), key=lambda x: x[0])
+        most_overdue_activity = sorted_activities[0]
         
-#         # Alunos atrasados na atividade mais atrasada
-#         overdue_students = activities[most_overdue_activity]
+        # Alunos atrasados na atividade mais atrasada
+        overdue_students = activities[most_overdue_activity]
         
-#         most_overdue_activities[course] = {
-#             'activity': most_overdue_activity[1],
-#             'due_date': most_overdue_activity[0],
-#             'overdue_students': len(overdue_students),
-#             'students': overdue_students
-#         }
+        most_overdue_activities[course] = {
+            'activity': most_overdue_activity[1],
+            'due_date': most_overdue_activity[0],
+            'overdue_students': len(overdue_students),
+            'students': overdue_students
+        }
 
-#     return most_overdue_activities
+    return most_overdue_activities
+
 
 def most_overdue_activity_per_course_and_num_students():
     courses = r.lrange('courses', 0, -1)

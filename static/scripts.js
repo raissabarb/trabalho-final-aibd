@@ -110,3 +110,104 @@ function displayResults(data) {
         resultsBody.appendChild(row);
     }
 }
+
+function fetchMostOverdueActivityPerCourse() {
+    fetch('/most_overdue_activity_per_course_and_num_students')
+        .then(response => response.json())
+        .then(data => displayMostOverdueActivityPerCourse(data))
+        .catch(error => console.error('Erro:', error));
+}
+
+function displayMostOverdueActivityPerCourse(data) {
+    const resultsBody = document.getElementById('results-body');
+    resultsBody.innerHTML = ''; // Limpa o conteúdo anterior
+
+    for (const [course, details] of Object.entries(data)) {
+        const row = document.createElement('tr');
+
+        const courseCell = document.createElement('td');
+        const activityCell = document.createElement('td');
+        const dueDateCell = document.createElement('td');
+        const studentsCell = document.createElement('td');
+
+        courseCell.textContent = course;
+        activityCell.textContent = details.activity;
+        dueDateCell.textContent = details.due_date;
+        studentsCell.textContent = details.overdue_students;
+
+        row.appendChild(courseCell);
+        row.appendChild(activityCell);
+        row.appendChild(dueDateCell);
+        row.appendChild(studentsCell);
+
+        resultsBody.appendChild(row);
+    }
+}
+
+function fetchStudentCourseProgress(studentName) {
+    fetch(`/student_course_progress/${studentName}`)
+        .then(response => response.json())
+        .then(data => displayStudentProgress(data))  // Função que exibe o progresso
+        .catch(error => console.error('Erro:', error));
+}
+
+// Função para carregar os estudantes no select ao carregar a página
+function loadStudents() {
+    fetch('/students')
+        .then(response => response.json())
+        .then(data => {
+            const studentSelect = document.getElementById('student-select');
+            studentSelect.innerHTML = '';  // Limpar qualquer opção existente
+
+            // Criar opção para cada estudante
+            data.forEach(student => {
+                const option = document.createElement('option');
+                option.value = student;
+                option.textContent = student;
+                studentSelect.appendChild(option);
+            });
+        })
+        .catch(error => console.error('Erro ao carregar estudantes:', error));
+}
+
+// Chamar a função quando a página carregar
+window.onload = loadStudents;
+
+
+function fetchSelectedStudentProgress() {
+    const studentSelect = document.getElementById('student-select');
+    const studentName = studentSelect.value;  // Obter o nome do estudante selecionado
+
+    if (studentName) {
+        fetch(`/student_course_progress/${studentName}`)
+            .then(response => response.json())
+            .then(data => displayStudentProgress(data))  // Exibir os resultados na tabela
+            .catch(error => console.error('Erro ao buscar progresso:', error));
+    } else {
+        console.error('Nenhum estudante selecionado');
+    }
+}
+
+
+function displayStudentProgress(data) {
+    const resultsBody = document.getElementById('results-body');
+    resultsBody.innerHTML = '';  // Limpar conteúdo anterior
+
+    for (const [course, progress] of Object.entries(data)) {
+        const row = document.createElement('tr');
+
+        const courseCell = document.createElement('td');
+        const completedCell = document.createElement('td');
+        const incompleteCell = document.createElement('td');
+
+        courseCell.textContent = course;
+        completedCell.textContent = progress.completed;
+        incompleteCell.textContent = progress.incomplete;
+
+        row.appendChild(courseCell);
+        row.appendChild(completedCell);
+        row.appendChild(incompleteCell);
+
+        resultsBody.appendChild(row);
+    }
+}
