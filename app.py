@@ -126,8 +126,16 @@ def index():
 def set_value():
     key = request.json.get('key')
     value = request.json.get('value')
-    r.set(key, value)
-    return jsonify({"message": f"Value set for {key}"}), 200
+
+    # Se a chave for "students", adicione o valor à lista de estudantes
+    if key == 'students':
+        r.rpush('students', value)
+        return jsonify({"message": f"Estudante {value} adicionado à lista de estudantes"}), 200
+    else:
+        # Inserir um valor normal no Redis
+        r.set(key, value)
+        return jsonify({"message": f"Valor definido para {key}"}), 200
+
 
 @app.route('/view')
 def view_all():

@@ -1,19 +1,22 @@
-document.getElementById('setValueForm').addEventListener('submit', function(event) {
+document.getElementById('addStudentForm').addEventListener('submit', function(event) {
     event.preventDefault();
 
-    const key = document.getElementById('key').value;
-    const value = document.getElementById('value').value;
+    // A chave é sempre 'students'
+    const key = 'students';
+    const studentName = document.getElementById('student-name').value;
 
+    // Enviar a requisição POST para o backend com o estudante
     fetch('/set', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ key, value }),
+        body: JSON.stringify({ key, value: studentName }),
     })
     .then(response => response.json())
     .then(data => {
-        displayResults(data);
+        console.log(data.message);
+        // Opcional: exibir uma mensagem de sucesso ou limpar o formulário
     })
     .catch(error => console.error('Erro:', error));
 });
@@ -210,4 +213,68 @@ function displayStudentProgress(data) {
 
         resultsBody.appendChild(row);
     }
+}
+
+function showStudentProgressContainer() {
+    // Exibir o contêiner de seleção de estudante
+    document.getElementById('student-progress-container').style.display = 'block';
+
+    // Carregar a lista de estudantes no select
+    loadStudents();
+}
+
+function loadStudents() {
+    fetch('/students')
+        .then(response => response.json())
+        .then(data => {
+            const studentSelect = document.getElementById('student-select');
+            studentSelect.innerHTML = '';  // Limpar opções existentes
+
+            // Criar uma opção para cada estudante
+            data.forEach(student => {
+                const option = document.createElement('option');
+                option.value = student;
+                option.textContent = student;
+                studentSelect.appendChild(option);
+            });
+        })
+        .catch(error => console.error('Erro ao carregar estudantes:', error));
+}
+
+function fetchSelectedStudentProgress() {
+    const studentSelect = document.getElementById('student-select');
+    const studentName = studentSelect.value;  // Obter o nome do estudante selecionado
+
+    if (studentName) {
+        fetch(`/student_course_progress/${studentName}`)
+            .then(response => response.json())
+            .then(data => displayStudentProgress(data))  // Exibir o progresso na tabela
+            .catch(error => console.error('Erro ao buscar progresso:', error));
+    } else {
+        console.error('Nenhum estudante selecionado');
+    }
+}
+
+// Função para exibir o contêiner de progresso do estudante
+function showStudentProgressContainer() {
+    hideAllContainers();  // Ocultar outros contêineres quando o progresso do estudante for exibido
+    document.getElementById('student-progress-container').style.display = 'block';
+    loadStudents();  // Carregar a lista de estudantes no select
+}
+
+// Função para ocultar o contêiner de progresso do estudante e outros
+function hideAllContainers() {
+    document.getElementById('student-progress-container').style.display = 'none';
+}
+
+// Função para exibir o contêiner de progresso do estudante
+function showStudentProgressContainer() {
+    hideAllContainers();  // Ocultar outros contêineres quando o progresso do estudante for exibido
+    document.getElementById('student-progress-container').style.display = 'block';
+    loadStudents();  // Carregar a lista de estudantes no select
+}
+
+// Função para ocultar o contêiner de progresso do estudante e outros
+function hideAllContainers() {
+    document.getElementById('student-progress-container').style.display = 'none';
 }

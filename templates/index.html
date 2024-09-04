@@ -34,7 +34,7 @@
                 <li><a href="#" onclick="fetchTop3CsStudents()" class="button is-fullwidth is-light">Top 3 Alunos de CS</a></li>
                 <li><a href="#" onclick="fetchCourseWithHighestOverdueRatio()" class="button is-fullwidth is-light">Proporção Atrasos</a></li>
                 <li><a href="#" onclick="fetchMostOverdueActivityPerCourse()" class="button is-fullwidth is-light">Atv Mais Atrasada por Curso</a></li>
-                <li><a href="#" onclick="fetchStudentCourseProgress('NOME_DO_ESTUDANTE')" class="button is-fullwidth is-light">Progresso do Estudante</a></li>
+                <li><a href="#" onclick="showStudentProgressContainer()" class="button is-fullwidth is-light">Progresso do Estudante</a></li>
             </ul>
         </nav>
     </aside>
@@ -42,38 +42,39 @@
     <!-- Conteúdo Principal -->
     <div class="column is-10 content">
         <section class="section">
-            <h2 class="subtitle has-text-centered">Adicionar Chave-Valor</h2>
-            <form id="setValueForm" class="box">
+            <h2 class="subtitle has-text-centered">Adicionar Estudante</h2>
+            <form id="addStudentForm" class="box">
                 <div class="field">
-                    <label class="label">Chave</label>
+                    <label class="label">Nome do Estudante</label>
                     <div class="control">
-                        <input class="input" type="text" id="key" name="key" placeholder="Chave" required>
+                        <input class="input" type="text" id="student-name" placeholder="Nome do Estudante" required>
                     </div>
                 </div>
-                <div class="field">
-                    <label class="label">Valor</label>
-                    <div class="control">
-                        <input class="input" type="text" id="value" name="value" placeholder="Valor" required>
-                    </div>
-                </div>
-                <button type="submit" class="button is-primary is-fullwidth">Definir</button>
-            </form>
+                <button type="submit" class="button is-primary is-fullwidth">Adicionar Estudante</button>
+            </form>                     
 
-            <li>
-                <div class="field">
-                    <label class="label">Selecionar Estudante</label>
-                    <div class="control">
-                        <div class="select is-fullwidth">
-                            <select id="student-select">
-                                <!-- Opções serão carregadas dinamicamente -->
-                            </select>
+
+
+            <!-- Contêiner para selecionar estudante e ver progresso, oculto por padrão -->
+            <div id="student-progress-container" style="display: none;">
+                <li>
+                    <div class="field">
+                        <label class="label">Selecionar Estudante</label>
+                        <div class="control">
+                            <div class="select is-fullwidth">
+                                <select id="student-select">
+                                    <!-- Opções serão carregadas dinamicamente -->
+                                </select>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </li>
-            <li>
-                <a href="#" onclick="fetchSelectedStudentProgress()" class="button is-fullwidth is-light">Progresso do Estudante</a>
-            </li>
+                </li>
+
+                <li>
+                    <a href="#" onclick="fetchSelectedStudentProgress()" class="button is-fullwidth is-light">Progresso do Estudante</a>
+                </li>
+            </div>
+
             
             <div id="results" class="box">
                 <!-- Os resultados serão exibidos aqui -->
