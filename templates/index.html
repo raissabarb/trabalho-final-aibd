@@ -4,36 +4,86 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistema de Gerenciamento de Estudantes</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <h1>Bem-vindo ao Sistema de Gerenciamento de Estudantes</h1>
 
-    <div class="container">
-        <h2>Ações Disponíveis</h2>
-        <button onclick="fetchStudents()">Ver Estudantes</button>
-        <button onclick="fetchViewAll()">Ver Todos os Dados</button>
-        <button onclick="fetchStudentsWithUpcomingActivities()">Estudantes com Atividades Futuras</button>
-        <button onclick="fetchCoursesWithIncompleteActivities()">Disciplinas com Atividades Incompletas</button>
-        <button onclick="fetchAverageAgePerCourse()">Média de Idade por Disciplina</button>
-        <button onclick="fetchOverdueActivitiesPerStudent()">Atividades Atrasadas por Estudante</button>
-        <button onclick="fetchTop3CsStudents()">Alunos de Computer Science com mais Atividades Concluídas</button>
-        <button onclick="fetchCourseWithHighestOverdueRatio()">Disciplina com Maior Proporção de Atividades Atrasadas</button>
-        
-        <h3>Adicionar Chave-Valor</h3>
-        <form id="setValueForm">
-            <label for="key">Chave:</label>
-            <input type="text" id="key" name="key" required>
-            <label for="value">Valor:</label>
-            <input type="text" id="value" name="value" required>
-            <button type="submit">Definir</button>
-        </form>
+<header class="header has-text-centered has-background-light">
+    <h1 class="title has-text-dark">Sistema de Gerenciamento de Estudantes</h1>
+</header>
 
-        <div id="results">
-            <!-- Os resultados serão exibidos aqui -->
-        </div>
+<!-- Mobile Menu Toggle Button -->
+<div class="menu-toggle is-hidden-desktop" onclick="toggleSidebar()">Menu</div>
+
+<div class="columns is-gapless">
+    <!-- Sidebar -->
+    <aside class="column is-2 sidebar has-background-light is-hidden-touch">
+        <nav class="menu">
+            <p class="menu-label has-text-centered">Ações Disponíveis</p>
+            <ul class="menu-list">
+                <li><a href="#" onclick="fetchStudents()" class="button is-fullwidth is-light">Ver Estudantes</a></li>
+                <li><a href="#" onclick="fetchViewAll()" class="button is-fullwidth is-light">Ver Todos os Dados</a></li>
+                <li><a href="#" onclick="fetchStudentsWithUpcomingActivities()" class="button is-fullwidth is-light">Atividades Futuras</a></li>
+                <li><a href="#" onclick="fetchCoursesWithIncompleteActivities()" class="button is-fullwidth is-light">Atividades Incompletas</a></li>
+                <li><a href="#" onclick="fetchAverageAgePerCourse()" class="button is-fullwidth is-light">Média de Idade por Disciplina</a></li>
+                <li><a href="#" onclick="fetchOverdueActivitiesPerStudent()" class="button is-fullwidth is-light">Atividades Atrasadas</a></li>
+                <li><a href="#" onclick="fetchTop3CsStudents()" class="button is-fullwidth is-light">Top 3 Alunos de CS</a></li>
+                <li><a href="#" onclick="fetchCourseWithHighestOverdueRatio()" class="button is-fullwidth is-light">Proporção Atrasos</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- Conteúdo Principal -->
+    <div class="column is-10 content">
+        <section class="section">
+            <h2 class="subtitle has-text-centered">Adicionar Chave-Valor</h2>
+            <form id="setValueForm" class="box">
+                <div class="field">
+                    <label class="label">Chave</label>
+                    <div class="control">
+                        <input class="input" type="text" id="key" name="key" placeholder="Chave" required>
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">Valor</label>
+                    <div class="control">
+                        <input class="input" type="text" id="value" name="value" placeholder="Valor" required>
+                    </div>
+                </div>
+                <button type="submit" class="button is-primary is-fullwidth">Definir</button>
+            </form>
+
+            <div id="results" class="box">
+                <!-- Os resultados serão exibidos aqui -->
+                <table class="table is-fullwidth is-striped is-hoverable">
+                    <thead>
+                        <tr>
+                            <th>Disciplina</th>
+                            <th>Idade Média</th>
+                        </tr>
+                    </thead>
+                    <tbody id="results-body">
+                        <!-- As linhas da tabela serão inseridas aqui dinamicamente -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
     </div>
+</div>
 
-    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
+<script>
+    function toggleSidebar() {
+        var sidebar = document.querySelector('.sidebar');
+        if (sidebar.style.display === "none" || sidebar.style.display === "") {
+            sidebar.style.display = "block";
+        } else {
+            sidebar.style.display = "none";
+        }
+    }
+</script>
+
+<script src="{{ url_for('static', filename='scripts.js') }}"></script>
 </body>
 </html>

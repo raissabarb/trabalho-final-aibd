@@ -82,3 +82,31 @@ function updateSoftwareEngineeringActivities() {
         .then(data => alert(data.message))
         .catch(error => console.error('Erro:', error));
 }
+
+function toggleSidebar() {
+    var sidebar = document.querySelector('.sidebar');
+    if (sidebar.style.display === "none" || sidebar.style.display === "") {
+        sidebar.style.display = "block";
+    } else {
+        sidebar.style.display = "none";
+    }
+}
+
+function displayResults(data) {
+    const resultsBody = document.getElementById('results-body');
+    resultsBody.innerHTML = ''; // Limpa qualquer conteúdo anterior
+
+    // Itera sobre os dados recebidos e insere as linhas na tabela
+    for (const [course, age] of Object.entries(data)) {
+        const row = document.createElement('tr');
+        const courseCell = document.createElement('td');
+        const ageCell = document.createElement('td');
+        
+        courseCell.textContent = course;
+        ageCell.textContent = age;
+
+        row.appendChild(courseCell);
+        row.appendChild(ageCell);
+        resultsBody.appendChild(row);
+    }
+}

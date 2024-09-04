@@ -4,14 +4,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dados no Redis</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <h1>Dados no Redis</h1>
-    <ul>
-        {% for key, value in items.items() %}
-            <li><strong>{{ key }}:</strong> {{ value }}</li>
-        {% endfor %}
-    </ul>
-    <a href="/">Voltar</a>
+
+<header class="header has-text-centered has-background-light">
+    <h1 class="title has-text-dark">Dados Armazenados no Redis</h1>
+</header>
+
+<section class="section">
+    <div class="container box">
+        <h2 class="subtitle">Visualização de Dados</h2>
+        <table class="table is-fullwidth is-striped is-hoverable">
+            <thead>
+                <tr>
+                    <th>Chave</th>
+                    <th>Valor</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for key, value in items.items() %}
+                    <tr>
+                        <td>{{ key }}</td>
+                        <td>
+                            <pre>{{ value | safe }}</pre>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a href="/" class="button is-primary is-fullwidth">Voltar</a>
+    </div>
+</section>
+
 </body>
 </html>

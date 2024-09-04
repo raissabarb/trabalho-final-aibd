@@ -1,30 +1,200 @@
+/* Global Styles */
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
+    background-color: #f4f6f8;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Header */
+.header {
     padding: 20px;
-    background-color: #f4f4f4;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+    background-color: #3498db;
 }
 
-.container {
-    max-width: 800px;
-    margin: 0 auto;
+.header .title {
+    color: #fff;
 }
 
-h1, h2, h3 {
+/* Sidebar */
+.sidebar {
+    height: 100vh;
+    padding: 20px;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+}
+
+.menu-list a {
+    margin-bottom: 15px;
+    padding: 10px 15px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, transform 0.2s;
+    background-color: #f5f7fa;
+    color: #3498db;
+    font-weight: 600;
     text-align: center;
 }
 
-button {
-    margin: 5px;
-    padding: 10px 15px;
-    font-size: 16px;
-    cursor: pointer;
+.menu-list a:hover {
+    background-color: #e0e0e0;
+    transform: translateX(5px);
 }
 
-#results {
-    margin-top: 20px;
-    background-color: white;
+/* Content */
+.content {
+    margin-left: 250px;
+    padding: 30px;
+}
+
+/* Box */
+.box {
+    background-color: #ffffff;
     padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    margin-top: 20px;
+}
+
+/* Form */
+.field .input {
+    border-radius: 8px;
+    border: 1px solid #dfe6e9;
+    padding: 10px;
+}
+
+.field .input:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+}
+
+/* Buttons */
+.button {
+    border-radius: 8px;
+    padding: 10px 15px;
+    transition: background-color 0.3s ease, transform 0.2s;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.button:hover {
+    background-color: #3498db;
+    transform: translateY(-2px);
+}
+
+.button.is-primary {
+    background-color: #3498db;
+    border-color: transparent;
+    color: #fff;
+}
+
+.button.is-primary:hover {
+    background-color: #2980b9;
+}
+
+.button.is-primary:active {
+    transform: translateY(-2px);
+}
+
+/* Tabela */
+.table {
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    margin-top: 20px;
+}
+
+.table th, .table td {
+    padding: 15px;
+}
+
+.table th {
+    background-color: #3498db;
+    color: white;
+    text-align: left;
+    font-weight: 600;
+}
+
+.table td pre {
+    background-color: #f4f6f8;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+/* Mobile Responsiveness */
+@media screen and (max-width: 768px) {
+    .content {
+        margin-left: 0;
+        padding: 15px;
+    }
+
+    /* Sidebar */
+    .sidebar {
+        display: none;
+    }
+
+    .header {
+        border-radius: 0;
+    }
+
+    /* Menu Toggle Button for Mobile */
+    .menu-toggle {
+        display: block;
+        background-color: #3498db;
+        color: white;
+        font-size: 18px;
+        padding: 10px;
+        text-align: center;
+        border-radius: 8px;
+        margin-bottom: 15px;
+        cursor: pointer;
+    }
+
+    .menu-toggle:hover {
+        background-color: #2980b9;
+    }
+
+    /* Tabela responsiva */
+    .table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    .box {
+        padding: 10px;
+    }
+
+    .button {
+        font-size: 14px;
+        padding: 8px 12px;
+    }
+}
+
+/* Estilos para a tabela de resultados */
+.table {
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.table th, .table td {
+    padding: 15px;
+    text-align: left;
+}
+
+.table th {
+    background-color: #3498db;
+    color: white;
+    font-weight: 600;
+}
+
+.table td {
+    background-color: #f4f6f8;
+    border-bottom: 1px solid #ddd;
+}
+
+.table tr:last-child td {
+    border-bottom: none; /* Remove a borda da última linha */
 }
